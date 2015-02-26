@@ -1,0 +1,7 @@
+{
+    "name" : "cURL Requests",
+    "author" : "Cory Evans <sysadmin@motherslounge.com>",
+    "description" : "Makes a request to a webserver and parses the response",
+    "url" : "http://www.international-webdesign.com/",
+    "modified_version" : "Jonathan Kressaty <jonathan.kressaty@gmail.com>"
+}
