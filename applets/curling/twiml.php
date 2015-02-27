@@ -36,19 +36,20 @@
     
     $json = json_decode($result, true);
     
+    
     if($json && $json['status'] == 'success'){
     	switch($json['type']){
       	case 'Play':
-          $response->addPlay($json['msg']);
-          $response->addRedirect($next);
+          $response->Play($json['msg']);
+          $response->Redirect($next);
         break;
         case 'Sms':
-          $response->addSms($json['msg']);
-          $response->addRedirect($next);
+          $response->Sms($json['msg']);
+          $response->Redirect($next);
         break;
         case 'Dial':
-          $response->addDial($json['msg']);
-          $response->addRedirect($next);
+          $response->Dial($json['msg']);
+          $response->Redirect($next);
         break;
         case 'Hangup':
         	$response->addHangup();
@@ -62,30 +63,25 @@
   	} elseif($json && $json['status'] != 'success'){
     	switch($json['type']){
       	case 'Play':
-          $response->addPlay($json['msg']);
-					$response->redirect();
+        	$response->Gather(array('numDigits' => $numDigits, 'timeout' => 60))->Play($json['msg']);
         break;
         case 'Hangup':
-        	$response->addHangup();
+        	$response->Hangup();
         break;
       	case 'Say':
         default:
-          $response->addSay($json['msg']);
-					$response->redirect();
+        	$response->Gather(array('numDigits' => $numDigits, 'timeout' => 60))->Say($json['msg']);
         break;
       }
     } else {
-    	error_log(print_r($json,true));
-			$response->say('You have entered an invalid selection');
 			$response->redirect();
     }
   } else {
   
-    $gather = $response->gather(compact('numDigits'));
+    $gather = $response->gather(array('numDigits' => $numDigits, 'timeout' => 60));
     // $verb = AudioSpeechPickerWidget::getVerbForValue($prompt, null);
     AudioSpeechPickerWidget::setVerbForValue($prompt, $gather);
     // $gather->append($verb);
   }
   
-  
-	$response->Respond();
+  $response->Respond();
